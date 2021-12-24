@@ -1,0 +1,2 @@
+# ADXL345_Library_for_arduino
+一种简单方便的驱动库可以很好兼容arduino系列，更少的依赖方便移植到其他类型mcu，灵活配置寄存器
