@@ -9,4 +9,8 @@ en-> Please excuse my poor English
 A simple and convenient driver library can be well compatible with arduino series, less dependence easy to transplant to other types of MCU, flexible configuration register  
  
 Iicsensor IC sensor, which includes adX345 driver and an AHT10 driver means it cannot operate in SPI mode.  It will be improved later.  
+<<<<<<< HEAD
 This library file is not brief but very readable, mainly to make up for features not covered by popular library files, such as low power consumption, FIFO.  
+=======
+This library file is not brief but very readable, mainly to make up for features not covered by popular library files, such as low power consumption, FIFO.  
+>>>>>>> cb7f5c9275259eb38fdeeea2169abe09b7e11f3f
