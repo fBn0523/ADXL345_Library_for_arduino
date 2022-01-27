@@ -18,7 +18,7 @@ This is a simple test program that you can configure as much as you need.  The m
 See the manual for details, a little less than a lot of advice.  
 */
     acc.set_ofs(0, 0, 0);
-    acc.set_activity_inactivity((uint8_t)75, (uint8_t)75, (uint8_t)5);
+    acc.set_activity_inactivity((uint8_t)16, (uint8_t)15, (uint8_t)30);
     Power_InitTypeDef power_ctl;
     power_ctl.Link = 1;
     power_ctl.AUTO_SLEEP = 0;
@@ -59,8 +59,8 @@ delay(100);
     Interrput.INACT_Z = ACT_AXES_ENABLE;
 
     Interrput.data_ready = INT_DISENABLE;
-    Interrput.single_tap = INT_ENABLE;
-    Interrput.double_tap = INT_ENABLE;
+    Interrput.single_tap = INT_DISENABLE;
+    Interrput.double_tap = INT_DISENABLE;
     Interrput.activity = INT_ENABLE;
     Interrput.inactivity = INT_ENABLE;
     Interrput.free_fall = INT_DISENABLE;
@@ -106,5 +106,5 @@ void setup() {
 void loop() {
   
    acc.read_InterruptSource(&isr);
-   delay(1000);
+   delay(100);
 }
