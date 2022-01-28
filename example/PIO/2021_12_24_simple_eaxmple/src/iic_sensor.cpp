@@ -127,7 +127,7 @@ void ADXL345::set_tap_mode(TAP_InitTypeDef *TAP)
 
   uint8_t tap_axes_default = B00000000;
 
-  tap_axes_default |= (TAP->Tap_Suppress << 3); //其实这里不需要if，懒得改了。
+  tap_axes_default |= (TAP->Tap_Suppress << 3);
 
   tap_axes_default |= (TAP->Tap_axes_x << 2);
   tap_axes_default |= (TAP->Tap_axes_y << 1);

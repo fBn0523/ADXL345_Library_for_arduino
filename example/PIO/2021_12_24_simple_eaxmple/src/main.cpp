@@ -18,7 +18,7 @@ This is a simple test program that you can configure as much as you need.  The m
 See the manual for details, a little less than a lot of advice.  
 */
     acc.set_ofs(0, 0, 0);
-    acc.set_activity_inactivity((uint8_t)16, (uint8_t)15, (uint8_t)30);
+    acc.set_activity_inactivity((uint8_t)16, (uint8_t)15, (uint8_t)10);
     Power_InitTypeDef power_ctl;
     power_ctl.Link = 1;
     power_ctl.AUTO_SLEEP = 0;
@@ -101,10 +101,17 @@ void setup() {
   epo_iic_sensoer_init();
   epo_adxl345_init();//even_power_on->epo
   adxl345_test();
+
+
 }
  Interruput_source_InitTypeDef isr;
 void loop() {
-  
+  int x,y,z;
    acc.read_InterruptSource(&isr);
+   acc.readAccel(&x, &y, &z);
+   float x_=(atan(x/sqrt(y*y+z*z)))*180/PI;
+   float y_=(atan(y/sqrt(x*x+z*z)))*180/PI;
+   float z_=(atan(z/sqrt(x*x+y*y)))*180/PI;
+   Serial.print(x_);  Serial.print("|"); Serial.print(y_); Serial.print("|");Serial.println(z_);
    delay(100);
 }
