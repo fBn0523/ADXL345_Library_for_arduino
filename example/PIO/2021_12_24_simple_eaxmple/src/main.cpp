@@ -2,6 +2,7 @@
 #include "iic_sensor.hpp"
 
 ADXL345 acc;
+Interruput_source_InitTypeDef isr;
 
 #define IMU_INT1 GPIO_NUM_25
 #define IMU_INT2 GPIO_NUM_16
@@ -101,7 +102,7 @@ See the manual for details, a little less than a lot of advice.
 void IRAM_ATTR imu_inactivity()
 {
     sleep_flag = 1;
-}
+}    
 void IRAM_ATTR imu_activity()
 {
     sleep_flag = 0;
@@ -111,13 +112,14 @@ void setup()
     Serial.begin(115200);
     epo_iic_sensoer_init();
     epo_adxl345_init(); //even_power_on->epo
-    adxl345_test();
+    
     pinMode(IMU_INT1, INPUT);
     pinMode(IMU_INT2, INPUT);
     attachInterrupt(IMU_INT1, imu_inactivity, RISING);
     attachInterrupt(IMU_INT2, imu_activity, RISING);
+    adxl345_test();
 }
-Interruput_source_InitTypeDef isr;
+
 
 void loop()
 {
@@ -138,6 +140,7 @@ void loop()
     else
     {
         Serial.println("sleep");
-        delay(500);
+        
     }
+    delay(500);
 }
