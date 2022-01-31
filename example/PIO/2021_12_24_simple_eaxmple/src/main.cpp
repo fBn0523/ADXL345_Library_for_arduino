@@ -2,9 +2,10 @@
 #include "iic_sensor.hpp"
 
 ADXL345 acc;
+Interruput_source_InitTypeDef isr;
 
-#define IMU_INT1 GPIO_NUM_25
-#define IMU_INT2 GPIO_NUM_16
+#define ACC_INT1 GPIO_NUM_25
+#define ACC_INT2 GPIO_NUM_35
 
 bool sleep_flag = 0;
 
@@ -24,7 +25,7 @@ This is a simple test program that you can configure as much as you need.  The m
 See the manual for details, a little less than a lot of advice.  
 */
     acc.set_ofs(0, 0, 0);
-    acc.set_activity_inactivity((uint8_t)16, (uint8_t)15, (uint8_t)10);//63.5*16=1016~=1000mg==1g
+    acc.set_activity_inactivity((uint8_t)15, (uint8_t)15, (uint8_t)10);//63.5*16=1016~=1000mg==1g
     Power_InitTypeDef power_ctl;
     power_ctl.Link = 1;
     power_ctl.AUTO_SLEEP = 1;
@@ -101,7 +102,7 @@ See the manual for details, a little less than a lot of advice.
 void IRAM_ATTR imu_inactivity()
 {
     sleep_flag = 1;
-}
+}     
 void IRAM_ATTR imu_activity()
 {
     sleep_flag = 0;
@@ -111,13 +112,14 @@ void setup()
     Serial.begin(115200);
     epo_iic_sensoer_init();
     epo_adxl345_init(); //even_power_on->epo
+    
+    pinMode(ACC_INT1, INPUT);
+    pinMode(ACC_INT2, INPUT);
+    attachInterrupt(ACC_INT1, imu_inactivity, RISING);
+    attachInterrupt(ACC_INT2, imu_activity, RISING);
     adxl345_test();
-    pinMode(IMU_INT1, INPUT);
-    pinMode(IMU_INT2, INPUT);
-    attachInterrupt(IMU_INT1, imu_inactivity, RISING);
-    attachInterrupt(IMU_INT2, imu_activity, RISING);
 }
-Interruput_source_InitTypeDef isr;
+
 
 void loop()
 {
@@ -138,6 +140,15 @@ void loop()
     else
     {
         Serial.println("sleep");
-        delay(500);
+          acc.read_InterruptSource(&isr);
+         esp_sleep_disable_wakeup_source(ESP_SLEEP_WAKEUP_EXT0); 
+           detachInterrupt(ACC_INT1); //把引脚的系统中断注销并指向唤醒引脚。
+           //detachInterrupt(ACC_INT2);
+           //esp_sleep_enable_ext0_wakeup(WAKEUP_PIN, 1);
+           //esp_sleep_enable_ext0_wakeup(ACC_INT2, 1);
+           esp_sleep_enable_ext0_wakeup(ACC_INT2,1);
+           esp_deep_sleep_start();
+          //esp_sleep_enable_ext0_wakeup(GPIO_NUM_25,1);
     }
+    delay(500);
 }
