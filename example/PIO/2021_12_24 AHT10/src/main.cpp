@@ -1,10 +1,10 @@
 #include <Arduino.h>
 #include "iic_sensor.hpp"
-
+#define USE_SERIAL_DEBUG
 AHT10 aht;
 void setup() {
 Serial.begin(115200);
-epo_iic_sensoer_init();
+iic_sensoer_init();
 aht.init_aht();
 aht.reset();
 
@@ -34,7 +34,7 @@ Serial.println(temperature);
 */
 void loop() {
  aht.start_measure();
- delay(1000);
-aht.read_raw_data();//摄氏度，相对湿度。
-
+ vTaskDelay(1000);
+Serial.println(aht.return_humidity());//摄氏度，相对湿度。
+Serial.println(aht.return_temperature());
 }

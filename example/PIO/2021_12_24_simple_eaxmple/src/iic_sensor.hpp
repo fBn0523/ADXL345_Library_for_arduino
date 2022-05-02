@@ -2,6 +2,8 @@
 #define _IIC_SENSOR_HPP_
 #include "Arduino.h"
 #include "Wire.h"
+
+//#define USE_SEIAL_DEBUG
 //*****************************寄存器地址***********************************************
 #define ADXL345_DEFAULT_ADDRESS (0x53)
 #define ADXL345_REG_DEVID (0x00)          // Device ID
@@ -193,12 +195,15 @@ public:
   void read_InterruptSource(Interruput_source_InitTypeDef *INT_S);
   void readAccel(int *x, int *y, int *z) ;
   
-  void set_reg(uint8_t reg_addr, uint8_t value); //写寄存器
-  uint8_t read_reg(uint8_t reg_addr);            //读寄存器
+           //读寄存器
  
 private:
   uint8_t iic_addr;
   uint8_t _buff[6]={0,0,0,0,0,0};
+void set_reg(uint8_t reg_addr, uint8_t value); //写寄存器
+  uint8_t read_reg(uint8_t reg_addr);   
+
+
 };
 
 
@@ -209,19 +214,49 @@ public:
 
 AHT10(uint8_t address);
 AHT10();
-
+ double humidity ;
+  double temperature;
 void init_aht();
 void reset();
 void start_measure();
 void read_raw_data();
-
+double return_humidity();
+double return_temperature();
 private:
 
 uint8_t aht_iic_addr;
 uint8_t data_buffer[6]={0,0,0,0,0,0};
+
 };
 
-void epo_iic_sensoer_init();
+bool iic_sensoer_init();
 
 
+#define AHT20_DEVICE_ADDR   0x38  //器件地址
+#define	AHT20_STATUS_REG		0x71	//状态字 寄存器地址
+
+class AHT20 {
+
+public:
+float _humidity;
+float _temperature;
+
+void init_aht();
+void measure_read();
+float return_humidity();
+float return_temperature();
+private:
+
+void send_ac(void);
+void reset_reg(uint8_t addr);
+uint8_t read_status();
+uint8_t read_reg(uint8_t reg_addr);
+uint8_t calc_crc8(uint8_t *message,uint8_t Num);
+
+
+
+};
+
+
+void reset_sys_value();
 #endif

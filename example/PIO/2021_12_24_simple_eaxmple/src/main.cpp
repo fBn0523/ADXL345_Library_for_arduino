@@ -33,7 +33,7 @@ See the manual for details, a little less than a lot of advice.
     power_ctl.Sleep = 0;
     power_ctl.Wakeup_speed = ADXL345_SLEEPDATARATE_1_HZ;
     acc.set_power_mode(&power_ctl);
-    delay(100);
+      vTaskDelay(100);
 
     TAP_InitTypeDef tap;
     tap.Tap_axes_x = 0;
@@ -82,7 +82,7 @@ See the manual for details, a little less than a lot of advice.
     Interrput.map_overrun = INT_PIN1;
 
     acc.set_interrput(&Interrput);
-    delay(100);
+       vTaskDelay(100);
 
     Fifo_InitTypeDef fio;
     fio.self_test = 0;                //自测
@@ -96,7 +96,7 @@ See the manual for details, a little less than a lot of advice.
     fio.trigger = INT_PIN1;        //触发中断1
     fio.samples = FIFO_SAMPLES_31; //8
     acc.set_fifo_mode(&fio);
-    delay(100);
+       vTaskDelay(100);
 }
 
 void IRAM_ATTR imu_inactivity()
@@ -110,9 +110,11 @@ void IRAM_ATTR imu_activity()
 void setup()
 {
     Serial.begin(115200);
-    epo_iic_sensoer_init();
+        pinMode(33, OUTPUT);
+    digitalWrite(33,HIGH);
+    iic_sensoer_init();
     epo_adxl345_init(); //even_power_on->epo
-    
+
     pinMode(ACC_INT1, INPUT);
     pinMode(ACC_INT2, INPUT);
     attachInterrupt(ACC_INT1, imu_inactivity, RISING);
@@ -123,6 +125,7 @@ void setup()
 
 void loop()
 {
+    
     int x, y, z;
     if (sleep_flag == 0)
     {
@@ -150,5 +153,6 @@ void loop()
            esp_deep_sleep_start();
           //esp_sleep_enable_ext0_wakeup(GPIO_NUM_25,1);
     }
-    delay(500);
+    vTaskDelay(500);
+    
 }
