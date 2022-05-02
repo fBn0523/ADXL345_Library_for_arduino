@@ -20,3 +20,6 @@ Low power input process Configure the auto sleep bit as 1, stop reading and writ
 AHTxx是来自中国的一种温湿度传感器 aht10 20 21 有各种封装类型，aht10是初代版本，他价格在1——5rmb左右。这是一个ADXL345驱动的附带产物。
 
 AHT is a temperature and humidity sensor from China. Aht10 20 21 has various packaging types. Aht10 is the first generation version, and its price is about 1 to 5RMB.  This is a by-product of the ADXL345 drive.  
+
+#AHT20
+aht10的升级版本 拥有crc校验和更低的功耗
