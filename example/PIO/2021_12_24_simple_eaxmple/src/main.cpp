@@ -102,7 +102,11 @@ See the manual for details, a little less than a lot of advice.
 void IRAM_ATTR imu_inactivity()
 {
     sleep_flag = 1;
+<<<<<<< HEAD
 }     
+=======
+}    
+>>>>>>> 0057a0f5ecb84a993cd833110c95deea051287bb
 void IRAM_ATTR imu_activity()
 {
     sleep_flag = 0;
@@ -114,11 +118,19 @@ void setup()
     digitalWrite(33,HIGH);
     iic_sensoer_init();
     epo_adxl345_init(); //even_power_on->epo
+<<<<<<< HEAD
 
     pinMode(ACC_INT1, INPUT);
     pinMode(ACC_INT2, INPUT);
     attachInterrupt(ACC_INT1, imu_inactivity, RISING);
     attachInterrupt(ACC_INT2, imu_activity, RISING);
+=======
+    
+    pinMode(IMU_INT1, INPUT);
+    pinMode(IMU_INT2, INPUT);
+    attachInterrupt(IMU_INT1, imu_inactivity, RISING);
+    attachInterrupt(IMU_INT2, imu_activity, RISING);
+>>>>>>> 0057a0f5ecb84a993cd833110c95deea051287bb
     adxl345_test();
 }
 
@@ -143,6 +155,7 @@ void loop()
     else
     {
         Serial.println("sleep");
+<<<<<<< HEAD
           acc.read_InterruptSource(&isr);
          esp_sleep_disable_wakeup_source(ESP_SLEEP_WAKEUP_EXT0); 
            detachInterrupt(ACC_INT1); //把引脚的系统中断注销并指向唤醒引脚。
@@ -155,4 +168,9 @@ void loop()
     }
     vTaskDelay(500);
     
+=======
+        
+    }
+    delay(500);
+>>>>>>> 0057a0f5ecb84a993cd833110c95deea051287bb
 }
